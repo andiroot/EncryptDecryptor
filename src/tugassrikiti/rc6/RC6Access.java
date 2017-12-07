@@ -18,12 +18,11 @@ public class RC6Access {
     public String getDataText() {
         return dataText;
     }
-
     public void setDataText(String dataText) {
         this.dataText = dataText;
     }
 
-    public String getKeyText() {
+    public String getKeyText(){
         return keyText;
     }
 
@@ -31,38 +30,19 @@ public class RC6Access {
         this.keyText = keyText;
     }
     public byte[] encrypting(){
-        byte[]data=this.getDataText().getBytes();
-        byte[]key=this.getKeyText().getBytes();
-        return RC6.encrypt(data, key);
+        byte[]data=this.getDataText().getBytes(StandardCharsets.UTF_8);
+        byte[]key=this.getKeyText().getBytes(StandardCharsets.UTF_8);
+        byte[]encode=Base64.getEncoder().encode(RC6.encrypt(data, key));
+        return encode;
     }
-    public String utf8Charset(){
-        byte[] utf8=new String(this.encrypting()).getBytes(StandardCharsets.UTF_8);
-        return new String(Base64.getEncoder().encode(utf8));
-        
-    }
-    public String utf16Charset(){
-        byte[] utf16=new String(this.encrypting()).getBytes(StandardCharsets.UTF_16);
-        return new String(Base64.getEncoder().encode(utf16));
-        
-    }
-    public String usAsciiCharset(){
-        byte[] usAscii=new String(this.encrypting()).getBytes(StandardCharsets.US_ASCII);
-        return new String(Base64.getEncoder().encode(usAscii));
-        
-    }
-    public String utf16LeCharset(){
-        byte[] utf16Le=new String(this.encrypting()).getBytes(StandardCharsets.UTF_16LE);
-        return new String(Base64.getEncoder().encode(utf16Le));
-        
-    }
-    public String utf16BeCharset(){
-        byte[] utf16Be=new String(this.encrypting()).getBytes(StandardCharsets.UTF_16BE);
-        return new String(Base64.getEncoder().encode(utf16Be));
-        
-    }
-    public String iso8859Charset(){
-        byte[] iso8859=new String(this.encrypting()).getBytes(StandardCharsets.ISO_8859_1);
-        return new String(Base64.getEncoder().encode(iso8859));
-        
+    public byte[] decrypting(){
+        try{
+            byte[]decodedData=Base64.getDecoder().decode(this.getDataText().getBytes(StandardCharsets.UTF_8));
+            byte[]decrypted=RC6.decrypt(decodedData,this.getKeyText().getBytes(StandardCharsets.UTF_8));
+            return decrypted;
+        }
+        catch(IllegalArgumentException ex){
+            return null;
+        }
     }
 }
