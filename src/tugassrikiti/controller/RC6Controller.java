@@ -6,17 +6,14 @@
 package tugassrikiti.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextArea;
+import javafx.scene.control.TextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ToggleGroup;
 import tugassrikiti.rc6.RC6Access;
 
 /**
@@ -25,26 +22,7 @@ import tugassrikiti.rc6.RC6Access;
  * @author andi
  */
 public class RC6Controller implements Initializable {
-    @FXML
-    private JFXRadioButton utf8CharsetRadio;
-
-    @FXML
-    private ToggleGroup charset;
-
-    @FXML
-    private JFXRadioButton utf16beCharsetRadio;
-
-    @FXML
-    private JFXRadioButton utf16CharsetRadio;
-
-    @FXML
-    private JFXRadioButton utf16leCharsetRadio;
-
-    @FXML
-    private JFXRadioButton isoCharsetRadio;
-
-    @FXML
-    private JFXRadioButton asciiCharsetRadio;
+    
 
     @FXML
     private JFXButton decryptButton;
@@ -53,13 +31,14 @@ public class RC6Controller implements Initializable {
     private JFXButton encryptButton;
     
     @FXML
-    private JFXTextArea plaintextArea;
+    private TextArea plaintextArea;
 
     @FXML
-    private JFXTextArea chipertextArea;
+    private TextArea chipertextArea;
     
-    Alert alert=new Alert(AlertType.WARNING);
-    String contentAlert="Pilih salah satu encoding";
+    @FXML
+    private JFXButton clearButton;
+    Alert alert=new Alert(AlertType.ERROR);
     @FXML
     private JFXTextField keyTextField;
     RC6Access rc6=new RC6Access();
@@ -77,87 +56,81 @@ public class RC6Controller implements Initializable {
         return keyTextField.getCharacters().length() %4==0;
         
     }
-
-    @FXML
-    void handleKeyTextField(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleUtf16CharsetRadio(ActionEvent event) {
-        if(charset.getSelectedToggle()!=null){
-            if(utf16CharsetRadio.isSelected()){
-                System.out.println("utf16");
-                plaintextArea.setText(utf16CharsetRadio.getText());
-            }
-        }
-    }
-
-    @FXML
-    void handleUtf16beCharsetRadio(ActionEvent event) {
-        if(charset.getSelectedToggle()!=null){
-            if(utf16beCharsetRadio.isSelected()){
-                System.out.println("utf16 be");
-                plaintextArea.setText(utf16beCharsetRadio.getText());
-            }
-        }
-    }
-
-    @FXML
-    void handleUtf16leCharsetRadio(ActionEvent event) {
-        if(charset.getSelectedToggle()!=null){
-            if(utf16leCharsetRadio.isSelected()){
-                System.out.println("utf16 le");
-                plaintextArea.setText(utf16leCharsetRadio.getText());
-            }
-        }
-    }
-    @FXML
-    void handleAsciiCharsetRadio(ActionEvent event) {
-        if(charset.getSelectedToggle()!=null){
-            if(asciiCharsetRadio.isSelected()){
-                System.out.println("ascii");
-                plaintextArea.setText(asciiCharsetRadio.getText());
-            }
-        }
-    }
-    @FXML
-    void handleUtf8CharsetRadio(ActionEvent event) {
-        if(charset.getSelectedToggle()!=null){
-            if(utf8CharsetRadio.isSelected()){
-                System.out.println("utf8");
-                plaintextArea.setText(utf8CharsetRadio.getText());
-            }
-        }
-    }
-     @FXML
-    void handleIsoCharsetRadio(ActionEvent event) {
-         if(charset.getSelectedToggle()!=null){
-            if(isoCharsetRadio.isSelected()){
-                System.out.println("iso");
-                plaintextArea.setText(isoCharsetRadio.getText());
-            }
-        }
-         else{
+    public void handleEncryptButtonAction(){   
+        if(handleKeyTextField()){
             
-         }
-    }
-    public void handleButtonAction(){
-        
-        if(charset.getSelectedToggle()==null){
-            alert.setTitle("Warteg !! *eh Warning !");
-            alert.setHeaderText("Pilih Encoding");
-            alert.setContentText("Pilih salah satu encodingnya ya kidz !!");
-            alert.showAndWait();
+            if(plaintextArea.getText().equals("")){
+                alert.setTitle("ERROR");
+                alert.setContentText("Plaintextnya kosong !");
+                alert.show();
+            }
+            else{
+                rc6.setDataText(plaintextArea.getText());
+                rc6.setKeyText(keyTextField.getText());
+                chipertextArea.setText(new String(rc6.encrypting()));
+            }
         }
     }
-    public void handleKeyTextField(){
+    public void handleDecryptButtonAction(){
+        if(handleKeyTextField()){
+            if(chipertextArea.getText().equals("")){
+                alert.setTitle("ERROR");
+                alert.setContentText("Isi chipertextnya dulu Lah (-_-)");
+                alert.show();
+            }
+            else{
+                rc6.setDataText(chipertextArea.getText());
+                rc6.setKeyText(keyTextField.getText());
+                if(rc6.decrypting()!=null){
+                    plaintextArea.setText(new String(rc6.decrypting()));
+                }
+                else{
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Chipertext ERROR");
+                    alert.setContentText("Chipertextnya corrupt,rusak atau key salah !!");
+                    alert.show();
+                }
+            }
+        }
+    }
+    public boolean handlePlainTextField(){
+        if(plaintextArea.getText().equals("")){
+            alert.setTitle("ERROR");
+            alert.setContentText("Plaintextnya kosong !");
+            return false;
+        }
+        return true;
+    }
+    public boolean handleChiperTextField(){
+        if(chipertextArea.getText().equals("")){
+            alert.setTitle("ERROR");
+            alert.setContentText("Chipertextnya kosong !");
+            return false;
+        }
+        return true;
+    }
+    public boolean handleKeyTextField(){
         if(!keyValidation()){
-            System.out.println("karakter kurang euy");
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Error euy ..");
+            alert.setContentText("Itu Key-nya invalid !!");
+            alert.showAndWait();
+            return false;
         }
-        else{
-            System.out.println("bisa");
+        if(keyTextField.getText().equals("")){
+            alert.setTitle("Warteg !! *eh Warning !");
+            alert.setHeaderText("Required Key");
+            alert.setContentText("Key-nya di input ya kidz !!");
+            alert.showAndWait();
+            return false;
         }
+        return true;
+    }
+    public void handleClearButton(){
+        keyTextField.setText("");
+        plaintextArea.setText("");
+        chipertextArea.setText("");
+        
     }
     
     
