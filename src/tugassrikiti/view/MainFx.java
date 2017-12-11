@@ -7,13 +7,9 @@ package tugassrikiti.view;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -21,7 +17,6 @@ import javafx.stage.Stage;
  * @author andi
  */
 public class MainFx extends Application {
-    
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/tugassrikiti/fxml/RC6Form.fxml"));

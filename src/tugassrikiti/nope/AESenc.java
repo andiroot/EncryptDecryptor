@@ -10,15 +10,13 @@ package tugassrikiti.nope;
  * @author andi
  */
 import java.security.Key;
-import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-
 public class AESenc {
   private static final String ALGO = "AES";
   private static final byte[] keyValue =
-            new byte[]{'T', 'h', 'e', 'B', 'e', 's', 't', 'S', 'e', 'c', 'r', 'e', 't', 'K', 'e', 'y'};
+            new byte[]{'k','u','n','c','i','k','u','n','c','i','l','l','l','t','a','i'};
 
     /**
      * Encrypt a string with AES algorithm.
@@ -67,8 +65,8 @@ public class AESenc {
         return key;
     }
     public static void main(String[]args) throws Exception{
-        System.out.println(AESenc.encrypt("njay bat tu orang"));
-        //System.out.println(AESenc.decrypt("TbbW4akgTtFrwFApk72j2OVOyDa8gd9HH+plFh6lPqQ="));
+        System.out.println(AESenc.encrypt("Tak Tun Tuang"));
+        //System.out.println(AESenc.decrypt("yv9szB518adjsqtXckHLHsr/bMwedfGnY7KrV3JByx7K/2zMHnXxp2Oyq1dyQcseyv9szB518adjsqtXckHLHmoF36idE1G+lM/r6zB97y8="));
     }
 //128 bit, CBC
 }

@@ -134,5 +134,4 @@ public class RC6Controller implements Initializable {
     }
     
     
-    
 }

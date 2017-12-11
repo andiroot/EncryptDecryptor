@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="103.0" style="-fx-background-color: #2F2F2F;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tugassrikiti.controller.SidePaneController">
+   <children>
+      <Pane prefHeight="106.0" prefWidth="103.0">
+         <children>
+            <ImageView accessibleRole="BUTTON" fitHeight="108.0" fitWidth="255.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../asset/icons/unlock.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
+      <JFXButton fx:id="rcButton" accessibleText="RC6" onAction="#handleRc6Button" prefHeight="26.0" prefWidth="112.0" stylesheets="@cssgua.css" text="RC6" />
+   </children>
+</VBox>
